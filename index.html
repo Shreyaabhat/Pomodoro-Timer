@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Focus Timer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🍅 Pomodoro Focus</h1>
+            <p class="subtitle">Boost your productivity with focused work sessions</p>
+        </header>
+
+        <div class="timer-card">
+            <div class="mode-selector">
+                <button class="mode-btn active" data-mode="pomodoro">Pomodoro</button>
+                <button class="mode-btn" data-mode="short">Short Break</button>
+                <button class="mode-btn" data-mode="long">Long Break</button>
+            </div>
+
+            <div class="timer-display">
+                <svg class="progress-ring" width="280" height="280">
+                    <circle class="progress-ring-circle" stroke="#e0e0e0" stroke-width="8" fill="transparent" r="130" cx="140" cy="140"/>
+                    <circle class="progress-ring-bar" stroke="url(#gradient)" stroke-width="8" fill="transparent" r="130" cx="140" cy="140"/>
+                    <defs>
+                        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#ff6b6b;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#ee5a6f;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <div class="timer-text">
+                    <span id="time-display">25:00</span>
+                    <span class="timer-label" id="timer-label">Focus Time</span>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="control-btn" id="start-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    Start
+                </button>
+                <button class="control-btn secondary" id="reset-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/>
+                    </svg>
+                    Reset
+                </button>
+            </div>
+        </div>
+
+        <div class="stats-card">
+            <div class="stat-item">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-content">
+                    <span class="stat-value" id="completed-pomodoros">0</span>
+                    <span class="stat-label">Completed Today</span>
+                </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">⏱️</div>
+                <div class="stat-content">
+                    <span class="stat-value" id="total-time">0h 0m</span>
+                    <span class="stat-label">Total Focus Time</span>
+                </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">🔥</div>
+                <div class="stat-content">
+                    <span class="stat-value" id="streak">0</span>
+                    <span class="stat-label">Day Streak</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-card">
+            <h3>⚙️ Settings</h3>
+            <div class="setting-row">
+                <label for="pomodoro-duration">Pomodoro Duration (min)</label>
+                <input type="number" id="pomodoro-duration" min="1" max="60" value="25">
+            </div>
+            <div class="setting-row">
+                <label for="short-break-duration">Short Break (min)</label>
+                <input type="number" id="short-break-duration" min="1" max="30" value="5">
+            </div>
+            <div class="setting-row">
+                <label for="long-break-duration">Long Break (min)</label>
+                <input type="number" id="long-break-duration" min="1" max="60" value="15">
+            </div>
+            <div class="setting-row">
+                <label for="auto-start">Auto-start breaks</label>
+                <input type="checkbox" id="auto-start">
+            </div>
+            <div class="setting-row">
+                <label for="notifications">Enable notifications</label>
+                <input type="checkbox" id="notifications" checked>
+            </div>
+        </div>
+
+        <div class="task-card">
+            <h3>📝 Current Task</h3>
+            <input type="text" id="task-input" placeholder="What are you working on?" maxlength="100">
+            <div id="task-display" class="task-display hidden"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
