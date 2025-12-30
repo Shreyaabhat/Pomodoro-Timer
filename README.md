@@ -1,196 +1,160 @@
-# 🍅 Pomodoro Focus Timer
+# Pomodoro Focus Timer Pro
 
-A beautiful and feature-rich Pomodoro timer web application to boost your productivity with the Pomodoro Technique. Built with vanilla HTML, CSS, and JavaScript.
+An advanced web-based Pomodoro timer with statistics, goals, achievements, dark/light theme, custom notification sounds, PWA support, calendar export, and simulated cloud sync.
 
-![Pomodoro Timer](https://img.shields.io/badge/version-1.0.0-brightgreen)
-![License](https://img.shields.io/badge/license-MIT-blue)
+## Features
 
-## ✨ Features
+- Pomodoro timer with focus, short break, and long break modes.
+- Custom durations for each mode.
+- Auto-start for next focus or break session.
+- Desktop notifications for session completion (optional).
+- Customizable notification sounds: built-in tones or your own audio file.
+- Dark/light theme toggle with persistence.
+- Daily and weekly goal setting with live progress.
+- Achievement badges for milestones, streaks, and intense days.
+- Weekly and monthly graphs of completed pomodoros.
+- Local statistics: total pomodoros, focus time, and streaks.
+- Activity history stored in the browser (localStorage).
+- Calendar export: generate an `.ics` file summarizing today’s pomodoros.
+- Simulated cloud sync across devices using a sync code (same browser or storage backend).
+- Progressive Web App (PWA): installable, offline-capable.
 
-### Core Functionality
-- ⏱️ **Three Timer Modes**: Pomodoro (25min), Short Break (5min), Long Break (15min)
-- ▶️ **Play/Pause Control**: Start, pause, and resume your sessions
-- 🔄 **Reset Functionality**: Quickly reset the current session
-- 📊 **Visual Progress Ring**: Animated circular progress indicator
-
-### Advanced Features
-- 📈 **Session Statistics**: Track completed pomodoros, total focus time, and daily streaks
-- ⚙️ **Customizable Durations**: Adjust timer lengths to suit your workflow
-- 🔔 **Browser Notifications**: Get notified when sessions complete
-- 🚀 **Auto-start Breaks**: Automatically start breaks after work sessions
-- 📝 **Task Tracking**: Note what you're working on during each session
-- 💾 **Persistent Storage**: Your settings and stats are saved locally
-- 🎨 **Beautiful UI**: Modern gradient design with smooth animations
-- 📱 **Responsive Design**: Works perfectly on desktop, tablet, and mobile
-
-### Statistics Tracking
-- Daily completed pomodoros counter
-- Total focus time calculation
-- Streak tracking to maintain consistency
-- Automatic daily reset at midnight
-
-## 🚀 Quick Start
+## Getting Started
 
 ### Prerequisites
-- A modern web browser (Chrome, Firefox, Safari, Edge)
-- No server or dependencies required!
 
-### Installation
+- Any modern browser (Chrome, Edge, Firefox, Safari).
+- Optional: a simple static server for best PWA behavior (e.g. `serve`, `http-server`, or Live Server in VS Code).
 
-1. **Download the files** or clone the repository
-2. **Organize your files** in the following structure:
-```
-   pomodoro-timer/
-   ├── index.html
-   ├── styles.css
-   ├── script.js
-   └── README.md
-```
+### File Structure
 
-3. **Open `index.html`** in your web browser
+- `index.html` – Main UI and layout. [file:1]
+- `styles.css` – App styling and theme definitions. [file:3]
+- `script.js` – Timer logic, stats, graphs, achievements, sync, and calendar export. [file:2]
+- `manifest.json` – PWA manifest configuration.
+- `service-worker.js` – Service worker for offline caching.
+- `icons/` – PWA app icons (e.g. `icon-192.png`, `icon-512.png`).
 
-That's it! The timer is ready to use.
+Place all files in the same directory, with icons inside an `icons` folder.
 
-## 📖 How to Use
+### Running Locally
 
-### Basic Usage
+1. Clone or download this project into a folder.
+2. Ensure the following files are present:
+   - `index.html`
+   - `styles.css`
+   - `script.js`
+   - `manifest.json`
+   - `service-worker.js`
+   - `icons/icon-192.png`, `icons/icon-512.png`
+3. Open `index.html` directly in your browser **or** serve the folder using a static server:
+   - Example with `npm`:
+     ```
+     npx serve .
+     ```
+4. If using a server, open the local URL (e.g. `http://localhost:3000`) in the browser.
 
-1. **Select a Mode**
-   - Click "Pomodoro" for a 25-minute focus session
-   - Click "Short Break" for a 5-minute break
-   - Click "Long Break" for a 15-minute break
+### PWA Installation
 
-2. **Start the Timer**
-   - Click the "Start" button to begin
-   - The progress ring will show your progress
-   - The document title updates with remaining time
+- On supported browsers, you can install the app:
+  - Desktop: Look for “Install” or the install icon in the address bar.
+  - Mobile: Add to Home Screen from the browser menu.
+- The service worker caches core assets for offline access.
 
-3. **Pause/Resume**
-   - Click "Pause" to temporarily stop
-   - Click "Resume" to continue from where you left off
+## Usage
 
-4. **Reset**
-   - Click "Reset" to start the current mode from the beginning
+### Basic Timer
 
-### Customization
+1. Select a mode:
+   - Pomodoro (focus)
+   - Short Break
+   - Long Break
+2. Click **Start** to begin the countdown.
+3. Click **Pause** to pause, **Resume** to continue, or **Reset** to return to the full duration.
 
-1. **Adjust Timer Durations**
-   - Scroll to the Settings section
-   - Change the duration values (in minutes)
-   - Values update automatically when not running
+The circular progress ring and the page title update as the timer runs. [file:2]
 
-2. **Enable Auto-start**
-   - Toggle "Auto-start breaks" to automatically begin breaks after pomodoros
-   - Toggle off for manual control
+### Tasks
 
-3. **Manage Notifications**
-   - Toggle "Enable notifications" on/off
-   - Grant browser notification permissions when prompted
-   - Receive alerts when sessions complete
+- Use the “What are you working on?” input to set your current task.
+- The current task is displayed below the input while you type. [file:2]
 
-4. **Track Your Task**
-   - Enter what you're working on in the "Current Task" field
-   - Your task will be displayed during the session
+### Goals
 
-## ⚙️ Settings Configuration
+- In the **Goals** panel, set:
+  - Daily pomodoro goal.
+  - Weekly pomodoro goal.
+- The app shows:
+  - Today’s completed pomodoros vs daily goal.
+  - This week’s pomodoros vs weekly goal. [file:2]
+- Completing sessions updates the progress automatically.
 
-| Setting | Default | Range | Description |
-|---------|---------|-------|-------------|
-| Pomodoro Duration | 25 min | 1-60 min | Length of focus sessions |
-| Short Break | 5 min | 1-30 min | Length of short breaks |
-| Long Break | 15 min | 1-60 min | Length of long breaks (every 4th break) |
-| Auto-start breaks | Off | On/Off | Automatically start breaks |
-| Notifications | On | On/Off | Browser notifications |
+### Achievements
 
-## 📊 Statistics
+Badges unlock automatically based on your activity, for example: [file:2]
 
-The timer tracks three key metrics:
+- Total pomodoros (10, 50, 100, etc.).
+- “Deep Focus Day” (high daily count).
+- “Weekly Warrior” (strong weekly total).
+- Streak-based achievements (e.g. 7-day streak).
 
-1. **Completed Today**: Number of pomodoros finished today (resets at midnight)
-2. **Total Focus Time**: Cumulative time spent in focus mode today
-3. **Day Streak**: Consecutive days you've completed at least one pomodoro
+Unlocked badges appear in the **Achievements** section.
 
-All statistics are saved in your browser's local storage and persist between sessions.
+### Statistics & Graphs
 
-## 🎨 Customization
+- The **Statistics** card shows:
+  - Completed pomodoros.
+  - Total focus time (hours/minutes).
+  - Current streak. [file:2]
+- Weekly/Monthly graph:
+  - Use the **This Week** / **This Month** tabs.
+  - Bars represent completed pomodoros per day, rendered on a `<canvas>` element. [file:2]
+- Historical data is stored in `localStorage` as a date-keyed history object.
 
-### Changing Colors
+### Notification Sounds
 
-Edit the CSS variables in `styles.css`:
-```css
-:root {
-    --primary-color: #ff6b6b;      /* Main theme color */
-    --secondary-color: #4ecdc4;     /* Accent color */
-    --background: #0f172a;          /* Page background */
-    --card-bg: #1e293b;             /* Card background */
-}
-```
+- Open the settings drawer (⚙️).
+- In the **Notifications** group:
+  - Toggle **Enable desktop notifications**.
+  - Choose a built-in sound type from the dropdown.
+  - Optional: upload a **Custom sound** (any audio file).
+- On session completion, the selected sound plays and a desktop notification is shown if permission is granted. [file:2]
 
-### Modifying Timer Sounds
+### Theme Toggle
 
-The app uses the Web Audio API. Edit the `playSound()` method in `script.js`:
-```javascript
-oscillator.frequency.value = 800;  // Change frequency (Hz)
-oscillator.type = 'sine';          // sine, square, triangle, sawtooth
-```
+- Use the moon/sun button in the header to switch between dark and light themes.
+- The chosen theme is saved and restored next time you open the app. [file:2][file:3]
 
-## 🔧 Technical Details
+### Calendar Export
 
-### Technologies Used
-- **HTML5**: Semantic markup and structure
-- **CSS3**: Modern styling with flexbox, grid, animations
-- **JavaScript (ES6+)**: Class-based architecture with localStorage
-- **Web APIs**: Notifications API, Audio API
+- In **Settings → Calendar**, click **Export to calendar (.ics)**.
+- The app generates an `.ics` event summarizing all pomodoros completed today, with duration based on total focus time.
+- Import the file into Google Calendar, Outlook, etc. [file:2]
 
-### Browser Compatibility
-- Chrome/Edge: ✅ Full support
-- Firefox: ✅ Full support  
-- Safari: ✅ Full support
-- Mobile Browsers: ✅ Responsive design
+### Cloud Sync (Simulated)
 
-### Storage
-The application uses localStorage to persist:
-- User settings (durations, preferences)
-- Session statistics (completed pomodoros, time, streak)
-- Current task information
+- In **Settings → Sync**:
+  - Enter a **Sync code** (any short string).
+  - Click **Push to cloud** to save your data for that code.
+  - On another device/browser (or later), enter the same code and click **Pull from cloud** to restore settings, stats, and history. [file:2]
+- This implementation uses `localStorage` as a demo “cloud” namespace; replace these calls with a real backend API for production.
 
-Storage is scoped to your browser and domain. No data is sent to any server.
+## Data Storage
 
-## 🐛 Troubleshooting
+The app uses `localStorage` for:
 
-### Notifications Not Working
-1. Check if browser notifications are allowed
-2. Click the notification prompt when it appears
-3. Check browser settings: Settings > Privacy > Notifications
-4. Enable the "Notifications" toggle in app settings
+- `pomodoroSettings` – durations, auto-start, notifications, goals, theme, sound, custom sound URL.
+- `pomodoroStats` – daily stats, total focus time, streak, last date.
+- `pomodoroHistory` – date-keyed counts of completed pomodoros. [file:2]
 
-### Timer Not Accurate
-- The timer uses `Date.now()` for accuracy
-- Browser throttling when tab is inactive is normal
-- Performance may vary on low-end devices
+No data is sent to any remote server unless you integrate one.
 
-### Settings Not Saving
-- Ensure localStorage is enabled in your browser
-- Check if you're in private/incognito mode (storage may not persist)
-- Try clearing site data and starting fresh
+## Customization
 
-### Stats Reset Unexpectedly
-- Stats reset daily at midnight (by design)
-- Streaks break if you miss a day
-- Clearing browser data will reset all stats
+- Adjust colors, spacing, and layout in `styles.css`. [file:3]
+- Extend achievements, change thresholds, or adjust graph ranges in `script.js`.
+- Modify PWA caching strategy in `service-worker.js` and icons/metadata in `manifest.json`. [file:2]
 
-## 📝 Future Enhancements
+## License
 
-Potential features for future versions:
-- 📊 Weekly/monthly statistics graphs
-- 🎵 Custom notification sounds
-- 🌙 Dark/light theme toggle
-- 📱 Progressive Web App (PWA) support
-- ☁️ Cloud sync across devices
-- 🏆 Achievement badges
-- 📅 Calendar integration
-- 🎯 Goal setting features
-
-## 🤝 Contributing
-
-Feel free to fork this project
+Add your preferred license here (e.g. MIT, Apache-2.0, or “All rights reserved”).
