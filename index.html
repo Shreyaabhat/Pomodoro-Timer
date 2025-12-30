@@ -1,113 +1,217 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pomodoro Focus Timer</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <title>Pomodoro Timer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- PWA meta -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#ff6347" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🍅 Pomodoro Focus</h1>
-            <p class="subtitle">Boost your productivity with focused work sessions</p>
-        </header>
+  <header class="app-header">
+    <h1>Pomodoro Timer</h1>
 
-        <div class="timer-card">
-            <div class="mode-selector">
-                <button class="mode-btn active" data-mode="pomodoro">Pomodoro</button>
-                <button class="mode-btn" data-mode="short">Short Break</button>
-                <button class="mode-btn" data-mode="long">Long Break</button>
-            </div>
+    <div class="header-right">
+      <!-- Theme toggle -->
+      <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme">
+        🌙
+      </button>
 
-            <div class="timer-display">
-                <svg class="progress-ring" width="280" height="280">
-                    <circle class="progress-ring-circle" stroke="#e0e0e0" stroke-width="8" fill="transparent" r="130" cx="140" cy="140"/>
-                    <circle class="progress-ring-bar" stroke="url(#gradient)" stroke-width="8" fill="transparent" r="130" cx="140" cy="140"/>
-                    <defs>
-                        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#ff6b6b;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#ee5a6f;stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
-                </svg>
-                <div class="timer-text">
-                    <span id="time-display">25:00</span>
-                    <span class="timer-label" id="timer-label">Focus Time</span>
-                </div>
-            </div>
-
-            <div class="controls">
-                <button class="control-btn" id="start-btn">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M8 5v14l11-7z"/>
-                    </svg>
-                    Start
-                </button>
-                <button class="control-btn secondary" id="reset-btn">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/>
-                    </svg>
-                    Reset
-                </button>
-            </div>
-        </div>
-
-        <div class="stats-card">
-            <div class="stat-item">
-                <div class="stat-icon">🎯</div>
-                <div class="stat-content">
-                    <span class="stat-value" id="completed-pomodoros">0</span>
-                    <span class="stat-label">Completed Today</span>
-                </div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-icon">⏱️</div>
-                <div class="stat-content">
-                    <span class="stat-value" id="total-time">0h 0m</span>
-                    <span class="stat-label">Total Focus Time</span>
-                </div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-icon">🔥</div>
-                <div class="stat-content">
-                    <span class="stat-value" id="streak">0</span>
-                    <span class="stat-label">Day Streak</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="settings-card">
-            <h3>⚙️ Settings</h3>
-            <div class="setting-row">
-                <label for="pomodoro-duration">Pomodoro Duration (min)</label>
-                <input type="number" id="pomodoro-duration" min="1" max="60" value="25">
-            </div>
-            <div class="setting-row">
-                <label for="short-break-duration">Short Break (min)</label>
-                <input type="number" id="short-break-duration" min="1" max="30" value="5">
-            </div>
-            <div class="setting-row">
-                <label for="long-break-duration">Long Break (min)</label>
-                <input type="number" id="long-break-duration" min="1" max="60" value="15">
-            </div>
-            <div class="setting-row">
-                <label for="auto-start">Auto-start breaks</label>
-                <input type="checkbox" id="auto-start">
-            </div>
-            <div class="setting-row">
-                <label for="notifications">Enable notifications</label>
-                <input type="checkbox" id="notifications" checked>
-            </div>
-        </div>
-
-        <div class="task-card">
-            <h3>📝 Current Task</h3>
-            <input type="text" id="task-input" placeholder="What are you working on?" maxlength="100">
-            <div id="task-display" class="task-display hidden"></div>
-        </div>
+      <!-- Settings: sound, calendar, sync -->
+      <button id="settings-toggle" class="icon-btn" aria-label="Open settings">
+        ⚙️
+      </button>
     </div>
+  </header>
 
-    <script src="script.js"></script>
+  <main>
+    <section class="timer-section">
+      <div class="mode-buttons">
+        <button class="mode-btn active" data-mode="pomodoro">Pomodoro</button>
+        <button class="mode-btn" data-mode="short">Short Break</button>
+        <button class="mode-btn" data-mode="long">Long Break</button>
+      </div>
+
+      <div class="timer-wrapper">
+        <svg class="progress-ring" width="300" height="300">
+          <circle
+            class="progress-ring-bg"
+            cx="150"
+            cy="150"
+            r="130"
+          ></circle>
+          <circle
+            class="progress-ring-bar"
+            cx="150"
+            cy="150"
+            r="130"
+          ></circle>
+        </svg>
+        <div class="timer-display">
+          <div id="timer-label">Focus Time</div>
+          <div id="time-display">25:00</div>
+        </div>
+      </div>
+
+      <div class="timer-controls">
+        <button id="start-btn" class="primary-btn">Start</button>
+        <button id="reset-btn" class="secondary-btn">Reset</button>
+      </div>
+
+      <div class="task-input-wrapper">
+        <input
+          id="task-input"
+          type="text"
+          placeholder="What are you working on?"
+        />
+        <div id="task-display" class="hidden"></div>
+      </div>
+    </section>
+
+    <!-- Goals & achievements -->
+    <section class="goals-achievements">
+      <div class="goals-panel card">
+        <h2>Goals</h2>
+        <div class="goal-row">
+          <label for="daily-goal">Daily pomodoro goal</label>
+          <input id="daily-goal" type="number" min="1" value="8" />
+        </div>
+        <div class="goal-row">
+          <label for="weekly-goal">Weekly pomodoro goal</label>
+          <input id="weekly-goal" type="number" min="1" value="40" />
+        </div>
+        <div class="goal-progress">
+          <p>Today: <span id="today-pomos">0</span> / <span id="daily-goal-display">8</span></p>
+          <p>This week: <span id="week-pomos">0</span> / <span id="weekly-goal-display">40</span></p>
+        </div>
+      </div>
+
+      <div class="achievements-panel card">
+        <h2>Achievements</h2>
+        <ul id="achievement-list" class="badge-list">
+          <!-- badges filled by JS -->
+        </ul>
+      </div>
+    </section>
+
+    <!-- Stats with weekly/monthly graphs -->
+    <section class="stats-section card">
+      <h2>Statistics</h2>
+
+      <div class="stats-top">
+        <div class="stat-item">
+          <span>Completed pomodoros</span>
+          <strong id="completed-pomodoros">0</strong>
+        </div>
+        <div class="stat-item">
+          <span>Total focus time</span>
+          <strong id="total-time">0h 0m</strong>
+        </div>
+        <div class="stat-item">
+          <span>Streak</span>
+          <strong id="streak">0</strong>
+        </div>
+      </div>
+
+      <div class="graph-tabs">
+        <button class="graph-tab active" data-range="week">This Week</button>
+        <button class="graph-tab" data-range="month">This Month</button>
+      </div>
+
+      <div class="graph-wrapper">
+        <canvas id="stats-graph" height="180"></canvas>
+      </div>
+    </section>
+
+    <!-- Settings drawer -->
+    <aside id="settings-drawer" class="settings-drawer">
+      <div class="settings-header">
+        <h2>Settings</h2>
+        <button id="settings-close" class="icon-btn">✖</button>
+      </div>
+
+      <div class="settings-group">
+        <h3>Timer</h3>
+        <label>
+          Pomodoro (min)
+          <input id="pomodoro-duration" type="number" min="1" value="25" />
+        </label>
+        <label>
+          Short break (min)
+          <input id="short-break-duration" type="number" min="1" value="5" />
+        </label>
+        <label>
+          Long break (min)
+          <input id="long-break-duration" type="number" min="1" value="15" />
+        </label>
+        <label class="checkbox-row">
+          <input id="auto-start" type="checkbox" />
+          Auto-start next session
+        </label>
+      </div>
+
+      <div class="settings-group">
+        <h3>Notifications</h3>
+        <label class="checkbox-row">
+          <input id="notifications" type="checkbox" checked />
+          Enable desktop notifications
+        </label>
+
+        <label>
+          Sound type
+          <select id="sound-select">
+            <option value="beep">Beep</option>
+            <option value="chime">Soft chime</option>
+            <option value="bell">Bell</option>
+          </select>
+        </label>
+
+        <label>
+          Custom sound
+          <input id="custom-sound" type="file" accept="audio/*" />
+        </label>
+
+        <audio id="custom-sound-audio" preload="auto"></audio>
+      </div>
+
+      <div class="settings-group">
+        <h3>Calendar</h3>
+        <p class="hint-text">
+          Export today’s pomodoros to your calendar as one event.
+        </p>
+        <button id="export-calendar" class="secondary-btn">
+          Export to calendar (.ics)
+        </button>
+      </div>
+
+      <div class="settings-group">
+        <h3>Sync</h3>
+        <label>
+          Sync code
+          <input id="sync-code" type="text" placeholder="e.g. my-focus-123" />
+        </label>
+        <p class="hint-text">
+          Your data is stored locally. Use the same code on other devices to sync.
+        </p>
+        <button id="sync-pull" class="secondary-btn">Pull from cloud</button>
+        <button id="sync-push" class="secondary-btn">Push to cloud</button>
+        <p id="sync-status" class="hint-text"></p>
+      </div>
+    </aside>
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js');
+      });
+    }
+  </script>
 </body>
 </html>
